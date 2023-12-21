@@ -407,10 +407,10 @@
                                     <h3>Total <span>Region</span></h3>
                                     @php
                                         $region_count = App\Models\graphDatabase::select('region')
-                                            ->where('region', '!=', null)
-                                            ->count();
+                                            ->where('region', '!=', null)->GroupBy('region')
+                                            ->get();
                                     @endphp
-                                    <p>{{ $region_count }}</p>
+                                    <p>{{ count($region_count) }}</p>
                                 </div>
                                 <div class="clearfix"> </div>
                             </div>
@@ -458,6 +458,23 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="form-group">
+                                                    @php
+                                                        $country = App\Models\graphDatabase::select('country')
+                                                            ->orderBy('country', 'desc')
+                                                            ->GroupBy('country')
+                                                            ->where('country', '!=', null)
+                                                            ->get();
+                                                    @endphp
+                                                    <select name="country" class="form-control"
+                                                        id="exampleInputEmail3" name="country">
+                                                        <option value='null'>Country</option>
+                                                        @foreach ($country as $value)
+                                                            <option value={{ $value->country }}>{{ $value->country }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 @php
                                                     $start_year = App\Models\graphDatabase::select('start_year')
                                                         ->orderBy('start_year', 'desc')
@@ -491,6 +508,34 @@
                                                         <option value='null'>End Year</option>
                                                         @foreach ($end_year as $value)
                                                             <option value={{ $value->end_year }}>{{ $value->end_year }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <select name="region" class="form-control"
+                                                        id="exampleInputEmail3" name="end_year">
+                                                        <option value='null'>Region</option>
+                                                        @foreach ($region_count as $value)
+                                                            <option value={{ $value->region }}>{{ $value->region }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    @php
+                                                        // $cagy = App\Models\CagyService::get();
+                                                        $swot = App\Models\graphDatabase::select('swot')
+                                                            ->orderBy('swot', 'desc')
+                                                            ->GroupBy('swot')
+                                                            ->where('swot', '!=', null)
+                                                            ->get();
+                                                    @endphp
+                                                    <select name="swot" class="form-control"
+                                                        id="exampleInputEmail3" name="swot">
+                                                        <option value='null'>Swot</option>
+                                                        @foreach ($swot as $value)
+                                                            <option value={{ $value->swot }}>{{ $value->swot }}
                                                             </option>
                                                         @endforeach
                                                     </select>
